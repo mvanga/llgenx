@@ -37,7 +37,12 @@ def first_set(nt):
 			else:
 				l = l + [rule[0]]
 		else:
-			l = l + first_set(rule[0])[0]
+		 cnt = len(rule)
+		 for idx in range(0, cnt):
+			 fi, check_next = first_set(rule[idx])
+			 l = l + fi;
+			 if check_next == False:
+			 	break;
 	return list(set(l)), ret
 
 def follow_set(nt):
