@@ -10,8 +10,11 @@ external-declaration ->
 	static_assert-declaration
 
 external-declaration2 ->
-	declarator compound-statement
-	init-declarator-list ;
+	declarator external-declaration3
+
+external-declaration3 ->
+	compound-statement
+	;
 
 function-definition ->
 	declaration-specifiers declarator compound-statement
