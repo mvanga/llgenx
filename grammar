@@ -1,0 +1,294 @@
+translation-unit ->
+	external-declaration translation-unit2
+
+translation-unit2 ->
+	external-declaration translation-unit2
+	EPSILON
+
+external-declaration ->
+	declaration-specifiers external-declaration2
+	static_assert-declaration
+
+external-declaration2 ->
+	declarator compound-statement
+	init-declarator-list ;
+
+function-definition ->
+	declaration-specifiers declarator compound-statement
+
+type-specifier ->
+	void
+	char
+	int
+	struct-or-union-specifier
+
+struct-or-union-specifier ->
+	struct identifier struct-or-union-specifier2
+
+struct-or-union-specifier2 ->
+	{ struct-declaration-list }
+	EPSILON
+
+struct-declaration-list ->
+	struct-declaration struct-declaration-list2
+
+struct-declaration-list2 ->
+	struct-declaration struct-declaration-list2
+	EPSILON
+
+struct-declaration ->
+	specifier-qualifier-list struct-declarator-list ;
+	static_assert-declaration
+
+specifier-qualifier-list ->
+	type-specifier specifier-qualifier-list
+
+struct-declarator-list ->
+	struct-declarator struct-declarator-list2
+
+struct-declarator-list2 ->
+	, struct-declarator struct-declarator-list2
+	EPSILON
+
+struct-declarator ->
+	declarator
+
+declaration ->
+	declaration-specifiers init-declarator-list ;
+	static_assert-declaration
+
+static_assert-declaration ->
+	_Static_assert ( constant-expression , string-literal ) ;
+
+declaration-specifiers ->
+	type-specifier declaration-specifiers2
+
+declaration-specifiers2 ->
+	type-specifier declaration-specifiers2
+	EPSILON
+
+init-declarator-list ->
+	init-declarator
+
+init-declarator ->
+	declarator
+
+declarator ->
+	pointer direct-declarator
+	direct-declarator
+
+pointer ->
+	* pointer2
+
+pointer2 ->
+	* pointer2
+	EPSILON
+
+direct-declarator ->
+	identifier direct-declarator2
+	( declarator ) direct-declarator2
+
+direct-declarator2 ->
+	( parameter-type-list )
+
+parameter-type-list ->
+	parameter-list
+
+parameter-list ->
+	parameter-declaration parameter-list2
+
+parameter-list2 ->
+	, parameter-declaration parameter-list2
+	EPSILON
+
+parameter-declaration ->
+	declaration-specifiers parameter-declaration2
+
+parameter-declaration2 ->
+	declarator
+	abstract-declarator
+
+abstract-declarator ->
+	pointer abstract-declarator2
+
+abstract-declarator2 ->
+	direct-abstract-declarator
+	EPSILON
+
+direct-abstract-declarator ->
+	( abstract-declarator ) direct-abstract-declarator2
+
+direct-abstract-declarator2 ->
+	[ direct-abstract-declarator3
+	( parameter-type-list ) direct-abstract-declarator2
+
+direct-abstract-declarator3 ->
+	assignment-expression ] direct-abstract-declarator2
+	static assignment-expression ] direct-abstract-declarator2
+	static assignment-expression ] direct-abstract-declarator2
+	* ] direct-abstract-declarator2
+
+statement ->
+	labeled-statement
+	compound-statement
+	expression-statement
+	selection-statement
+	iteration-statement
+	jump-statement
+
+labeled-statement ->
+	identifier : statement
+
+compound-statement ->
+	{ block-item-list }
+
+block-item-list ->
+	block-item block-item-list2
+
+block-item-list2 ->
+	block-item block-item-list2
+	EPSILON
+
+block-item ->
+	declaration
+	statement
+
+expression-statement ->
+	expression ;
+	;
+
+selection-statement ->
+	if ( expression ) statement selection-statement2
+
+selection-statement2:
+	else statement
+	EPSILON
+
+iteration-statement ->
+	while ( expression ) statement
+
+jump-statement ->
+	goto identifier ;
+	continue ;
+	break ;
+	return expression ;
+
+primary-expression ->
+	identifier
+	constant
+	string-literal
+	( expression )
+
+postfix-expression ->
+	primary-expression postfix-expression2
+
+postfix-expression2 ->
+	[ expression ] postfix-expression2
+	( argument-expression-list ) postfix-expression2
+	. identifier postfix-expression2
+	-> identifier postfix-expression2
+
+argument-expression-list ->
+	assignment-expression argument-expression-list2
+
+argument-expression-list2 ->
+	, assignment-expression argument-expression-list2
+
+unary-expression ->
+	postfix-expression
+	++ unary-expression
+	-- unary-expression
+	unary-operator cast-expression
+	sizeof unary-expression2
+
+unary-expression2 ->
+	unary-expression
+	( type-specifier )
+
+unary-operator ->
+	&
+	*
+	-
+	!
+
+cast-expression ->
+	unary-expression
+	( type-specifier ) cast-expression
+
+multiplicative-expression ->
+	cast-expression multiplicative-expression2
+
+multiplicative-expression2 ->
+	* cast-expression multiplicative-expression2
+	EPSILON
+
+additive-expression ->
+	multiplicative-expression additive-expression
+
+additive-expression2 ->
+	+ multiplicative-expression additive-expression2
+	- multiplicative-expression additive-expression2
+	EPSILON
+
+relational-expression ->
+	additive-expression relational-expression2
+
+relational-expression2 ->
+	< additive-expression relational-expression2
+	EPSILON
+
+equality-expression ->
+	relational-expression equality-expression2
+
+equality-expression2 ->
+	== relational-expression equality-expression2
+	!= relational-expression equality-expression2
+	EPSILON
+
+logical-AND-expression ->
+	equality-expression logical-AND-expression2
+
+logical-AND-expression2 ->
+	&& equality-expression logical-AND-expression2
+	EPSILON
+
+logical-OR-expression ->
+	logical-AND-expression logical-OR-expression2
+
+logical-OR-expression2 ->
+	|| logical-AND-expression logical-OR-expression2
+	EPSILON
+
+conditional-expression ->
+	logical-OR-expression conditional-expression2
+
+conditional-expression2 ->
+	? expression : conditional-expression
+	EPSILON
+
+assignment-expression ->
+	conditional-expression
+	unary-expression assignment-operator assignment-expression
+
+assignment-operator ->
+	=
+	*=
+	/=
+	%=
+	+=
+	-=
+	<<=
+	>>=
+	&=
+	^=
+	|=
+
+expression ->
+	assignment-expression expression2
+
+expression2 ->
+	, assignment-expression expression2
+	EPSILON
+
+constant-expression ->
+	conditional-expression
