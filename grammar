@@ -110,6 +110,7 @@ parameter-declaration ->
 parameter-declaration2 ->
 	declarator
 	abstract-declarator
+	EPSILON
 
 abstract-declarator ->
 	pointer abstract-declarator2
@@ -190,12 +191,14 @@ postfix-expression2 ->
 	( argument-expression-list ) postfix-expression2
 	. identifier postfix-expression2
 	-> identifier postfix-expression2
+	EPSILON
 
 argument-expression-list ->
 	assignment-expression argument-expression-list2
 
 argument-expression-list2 ->
 	, assignment-expression argument-expression-list2
+	EPSILON
 
 unary-expression ->
 	postfix-expression
@@ -226,7 +229,7 @@ multiplicative-expression2 ->
 	EPSILON
 
 additive-expression ->
-	multiplicative-expression additive-expression
+	multiplicative-expression additive-expression2
 
 additive-expression2 ->
 	+ multiplicative-expression additive-expression2
