@@ -37,12 +37,14 @@ def first_set(nt):
 			else:
 				l = l + [rule[0]]
 		else:
-		 cnt = len(rule)
-		 for idx in range(0, cnt):
-			 fi, check_next = first_set(rule[idx])
-			 l = l + fi;
-			 if check_next == False:
-			 	break;
+			cnt = len(rule)
+			for idx in range(0, cnt):
+				fi, check_next = first_set(rule[idx])
+				l = l + fi;
+				if check_next == False:
+			 		break;
+			if idx == cnt and check_next == True:
+				l = l + "EPSILON"
 	return list(set(l)), ret
 
 def follow_set(nt):
